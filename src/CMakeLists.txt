@@ -27,7 +27,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
 endif()
 LLAMALIB_COMPILE_DEFS(${LLAMALIB_ARCHITECTURE_LIBRARY})
 target_include_directories(${LLAMALIB_ARCHITECTURE_LIBRARY} PRIVATE "${LLAMA_CPP_ROOT}/src" "${LLAMA_CPP_ROOT}/ggml/include" "${LLAMA_CPP_ROOT}/tools/server" "${LLAMA_CPP_ROOT}/tools/mtmd" "${LLAMA_CPP_ROOT}/common" "${LLAMA_CPP_ROOT}/vendor" "${CMAKE_CURRENT_SOURCE_DIR}/ui_stub")
-target_link_libraries(${LLAMALIB_ARCHITECTURE_LIBRARY} PRIVATE common mtmd)
+target_link_libraries(${LLAMALIB_ARCHITECTURE_LIBRARY} PRIVATE llama-common mtmd)
 install(TARGETS ${LLAMALIB_ARCHITECTURE_LIBRARY} LIBRARY)
 
 # build runtime library
