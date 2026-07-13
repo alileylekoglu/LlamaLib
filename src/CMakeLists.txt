@@ -25,7 +25,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
     target_link_options(${LLAMALIB_ARCHITECTURE_LIBRARY} PRIVATE -Wl,--no-undefined)
 endif()
 LLAMALIB_COMPILE_DEFS(${LLAMALIB_ARCHITECTURE_LIBRARY})
-target_include_directories(${LLAMALIB_ARCHITECTURE_LIBRARY} PRIVATE "${LLAMA_CPP_ROOT}/src" "${LLAMA_CPP_ROOT}/ggml/include" "${LLAMA_CPP_ROOT}/tools/server" "${LLAMA_CPP_ROOT}/tools/mtmd" "${LLAMA_CPP_ROOT}/common")
+target_include_directories(${LLAMALIB_ARCHITECTURE_LIBRARY} PRIVATE "${LLAMA_CPP_ROOT}/src" "${LLAMA_CPP_ROOT}/ggml/include" "${LLAMA_CPP_ROOT}/tools/server" "${LLAMA_CPP_ROOT}/tools/mtmd" "${LLAMA_CPP_ROOT}/common" "${LLAMA_CPP_ROOT}/vendor")
 target_link_libraries(${LLAMALIB_ARCHITECTURE_LIBRARY} PRIVATE common mtmd)
 install(TARGETS ${LLAMALIB_ARCHITECTURE_LIBRARY} LIBRARY)
 
