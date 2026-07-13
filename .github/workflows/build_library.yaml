@@ -22,7 +22,6 @@ jobs:
           - arch: linux-x64_avx
           - arch: linux-x64_avx512
           - arch: linux-x64_vulkan
-          - arch: linux-x64_tinyblas
           - arch: linux-x64_cublas
             
     steps:
@@ -410,7 +409,6 @@ jobs:
           - arch: win-x64_avx
           - arch: win-x64_avx512
           - arch: win-x64_vulkan
-          - arch: win-x64_tinyblas
           - arch: win-x64_cublas
 
     steps:
