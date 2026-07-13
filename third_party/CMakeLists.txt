@@ -115,26 +115,9 @@ endif()
 file(COPY ${LLAMA_CPP_ROOT}/vendor/nlohmann/json.hpp DESTINATION ${CMAKE_SOURCE_DIR}/include)
 file(COPY ${LLAMA_CPP_ROOT}/vendor/cpp-httplib/httplib.h DESTINATION ${CMAKE_SOURCE_DIR}/include)
 
-set(PUBLIC_ASSETS
-    index.html.gz
-    loading.html
-)
-
-# generate files needed by llama.cpp
-foreach(asset ${PUBLIC_ASSETS})
-    set(input "${LLAMA_CPP_ROOT}/tools/server/public/${asset}")
-    set(output "${LLAMA_CPP_ROOT}/tools/server/${asset}.hpp")
-    list(APPEND GENERATED_HEADERS ${output})
-
-    add_custom_command(
-        DEPENDS "${input}"
-        OUTPUT "${output}"
-        COMMAND "${CMAKE_COMMAND}" "-DINPUT=${input}" "-DOUTPUT=${output}" -P "${LLAMA_CPP_ROOT}/scripts/xxd.cmake"
-    )
-    set_source_files_properties(${output} PROPERTIES GENERATED TRUE)
-endforeach()
-
-add_custom_target(generate_assets ALL DEPENDS ${GENERATED_HEADERS})
+# NOTE: b9977 no longer embeds webui assets (scripts/xxd.cmake and
+# tools/server/public/ were removed upstream); the generated headers are
+# not referenced by any compiled source anymore.
 
 ################################################ BUILD ################################################
 
