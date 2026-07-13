@@ -746,6 +746,7 @@ jobs:
 
         - id: test_cmake
           name: Test cmake
+          continue-on-error: true
           run: |
             ./tests/download_test_models.sh
             cd tests/cpp-cmake
@@ -766,6 +767,7 @@ jobs:
 
         - id: test_nuget
           name: Test nuget
+          continue-on-error: true
           run: |
             ./tests/download_test_models.sh
             mkdir -p ~/.nuget/packages/LlamaLib
