@@ -248,7 +248,7 @@ index ea684d9..85202ae 100644
 -    target_compile_features(llama-mtmd-debug PRIVATE cxx_std_17)
  endif()
 diff --git a/tools/server/server-context.cpp b/tools/server/server-context.cpp
-index 4826ca5..89e451d 100644
+index 4826ca5..3a17288 100644
 --- a/tools/server/server-context.cpp
 +++ b/tools/server/server-context.cpp
 @@ -178,8 +178,8 @@ struct server_slot {
@@ -270,20 +270,19 @@ index 4826ca5..89e451d 100644
      // note: accessing these fields outside of this class is not thread-safe
      // use server_context methods instead
  
-@@ -1158,6 +1157,12 @@ private:
+@@ -1158,6 +1157,11 @@ private:
              return false;
          }
  
 +        if (ctx_tgt == nullptr) {
-+            SRV_ERR("ctx is null, '%s'
-+", "");
++            SRV_ERR("ctx is null, '%s'\n", "");
 +            return false;
 +        }
 +
          vocab = llama_model_get_vocab(model_tgt);
  
          n_ctx = llama_n_ctx(ctx_tgt);
-@@ -1791,7 +1796,7 @@ private:
+@@ -1791,7 +1795,7 @@ private:
              slot.smpl.reset();
          }
  
@@ -293,7 +292,7 @@ index 4826ca5..89e451d 100644
          slot.state = slot.task->is_child()
              ? SLOT_STATE_WAIT_OTHER // wait for the parent to process prompt
 diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
-index 48f903d..b1ab943 100644
+index 48f903d..5f4b57d 100644
 --- a/tools/server/server-http.cpp
 +++ b/tools/server/server-http.cpp
 @@ -16,6 +16,30 @@
@@ -327,13 +326,12 @@ index 48f903d..b1ab943 100644
  class server_http_context::Impl {
  public:
      std::unique_ptr<httplib::Server> srv;
-@@ -101,6 +125,11 @@ bool server_http_context::init(const common_params & params) {
+@@ -101,6 +125,10 @@ bool server_http_context::init(const common_params & params) {
              params.ssl_file_cert.c_str(), params.ssl_file_key.c_str()
          );
          is_ssl = true;
 +    } else if (!params.ssl_key.empty() && !params.ssl_cert.empty()) {
-+        SRV_TRC("%s", "running with in-memory SSL
-+");
++        SRV_TRC("%s", "running with in-memory SSL\n");
 +        srv = std::make_unique<httplib::SSLServer>(load_cert(params.ssl_cert), load_key(params.ssl_key));
 +        is_ssl = true;
      } else {
