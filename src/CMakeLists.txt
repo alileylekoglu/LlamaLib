@@ -20,6 +20,11 @@ add_library(
      ${LLAMA_CPP_ROOT}/tools/server/server-common.cpp
      ${LLAMA_CPP_ROOT}/tools/server/server-task.cpp
      ${LLAMA_CPP_ROOT}/tools/server/server-http.cpp
+     ${LLAMA_CPP_ROOT}/tools/server/server-chat.cpp
+     ${LLAMA_CPP_ROOT}/tools/server/server-stream.cpp
+     ${LLAMA_CPP_ROOT}/tools/server/server-tools.cpp
+     ${LLAMA_CPP_ROOT}/tools/server/server-schema.cpp
+     ${LLAMA_CPP_ROOT}/tools/server/server-models.cpp
      ui_stub/ui.cpp
 )
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
