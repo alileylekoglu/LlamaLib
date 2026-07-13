@@ -292,47 +292,21 @@ index 4826ca5..3a17288 100644
          slot.state = slot.task->is_child()
              ? SLOT_STATE_WAIT_OTHER // wait for the parent to process prompt
 diff --git a/tools/server/server-http.cpp b/tools/server/server-http.cpp
-index 48f903d..5f4b57d 100644
+index 48f903d..112e5f7 100644
 --- a/tools/server/server-http.cpp
 +++ b/tools/server/server-http.cpp
-@@ -16,6 +16,30 @@
- // HTTP implementation using cpp-httplib
- //
- 
-+#ifdef CPPHTTPLIB_OPENSSL_SUPPORT
-+EVP_PKEY *load_key(const std::string &key_str)
-+{
-+    BIO *bio = BIO_new_mem_buf(key_str.data(), (int)key_str.size());
-+    if (!bio)
-+        return NULL;
-+    EVP_PKEY *key = PEM_read_bio_PrivateKey(bio, NULL, 0, NULL);
-+    BIO_free(bio);
-+    return key;
-+}
-+
-+X509 *load_cert(const std::string &cert_str)
-+{
-+    BIO *bio = BIO_new_mem_buf(cert_str.data(), (int)cert_str.size());
-+    if (!bio)
-+        return NULL;
-+    X509 *cert = (cert_str[0] == '-')
-+                     ? PEM_read_bio_X509(bio, NULL, NULL, NULL)
-+                     : d2i_X509_bio(bio, NULL);
-+    BIO_free(bio);
-+    return cert;
-+}
-+#endif
-+
- class server_http_context::Impl {
- public:
-     std::unique_ptr<httplib::Server> srv;
-@@ -101,6 +125,10 @@ bool server_http_context::init(const common_params & params) {
+@@ -101,6 +101,15 @@ bool server_http_context::init(const common_params & params) {
              params.ssl_file_cert.c_str(), params.ssl_file_key.c_str()
          );
          is_ssl = true;
 +    } else if (!params.ssl_key.empty() && !params.ssl_cert.empty()) {
 +        SRV_TRC("%s", "running with in-memory SSL\n");
-+        srv = std::make_unique<httplib::SSLServer>(load_cert(params.ssl_cert), load_key(params.ssl_key));
++        httplib::SSLServer::PemMemory pem{};
++        pem.cert_pem     = params.ssl_cert.c_str();
++        pem.cert_pem_len = params.ssl_cert.size();
++        pem.key_pem      = params.ssl_key.c_str();
++        pem.key_pem_len  = params.ssl_key.size();
++        srv = std::make_unique<httplib::SSLServer>(pem);
 +        is_ssl = true;
      } else {
          SRV_TRC("%s", "running without SSL\n");
