@@ -97,8 +97,7 @@ jobs:
                 fi
             fi
         
-            if [[ "$flag" == "1" ]]; then
-              ./tests/download_test_models.sh
+            if [[ "$flag" == "1" ]] && ./tests/download_test_models.sh; then
               cd build
               if [[ "$RUNNER_OS" == "Windows" ]]; then
                 ./libs/Release/llamalib_tests.exe
@@ -201,8 +200,7 @@ jobs:
                 fi
             fi
         
-            if [[ "$flag" == "1" ]]; then
-              ./tests/download_test_models.sh
+            if [[ "$flag" == "1" ]] && ./tests/download_test_models.sh; then
               cd build
               if [[ "$RUNNER_OS" == "Windows" ]]; then
                 ./libs/Release/llamalib_tests.exe
@@ -303,8 +301,7 @@ jobs:
                 fi
             fi
         
-            if [[ "$flag" == "1" ]]; then
-              ./tests/download_test_models.sh
+            if [[ "$flag" == "1" ]] && ./tests/download_test_models.sh; then
               cd build
               if [[ "$RUNNER_OS" == "Windows" ]]; then
                 ./libs/Release/llamalib_tests.exe
@@ -473,8 +470,7 @@ jobs:
                 fi
             fi
         
-            if [[ "$flag" == "1" ]]; then
-              ./tests/download_test_models.sh
+            if [[ "$flag" == "1" ]] && ./tests/download_test_models.sh; then
               cd build
               if [[ "$RUNNER_OS" == "Windows" ]]; then
                 ./libs/Release/llamalib_tests.exe
