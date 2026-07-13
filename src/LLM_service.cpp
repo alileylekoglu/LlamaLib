@@ -196,7 +196,7 @@ void LLMService::init(int argc, char **argv)
 
         params = new common_params();
         params->port = 0;
-        params->verbosity = common_log_verbosity_thold;
+        params->verbosity = common_log_get_verbosity_thold();
         if (!common_params_parse(argc, argv, *params, LLAMA_EXAMPLE_SERVER))
         {
             throw std::runtime_error("Invalid parameters!");
@@ -219,8 +219,8 @@ void LLMService::init(int argc, char **argv)
         }
 
         // for consistency between server router mode and single-model mode, we set the same model name as alias
-        if (params->model_alias.empty() && !params->model.name.empty()) {
-            params->model_alias.insert(params->model.name);
+        if (params->model_alias.empty() && !params->model.get_name().empty()) {
+            params->model_alias.insert(params->model.get_name());
         }
 
         common_init();
@@ -532,7 +532,7 @@ std::string LLMService::encapsulate_route(const json &body, server_http_context:
 
     try
     {
-        server_http_req req{ {}, {}, "", "", body.dump(), always_false };
+        server_http_req req{ {}, {}, "", "", body.dump(), {}, always_false };
         return route_handler(req)->data;
     }
     catch (...)
@@ -591,7 +591,7 @@ std::string LLMService::completion_json(const json &data_in, CharArrayFn callbac
         json data = data_in;
         data["stream"] = stream;
 
-        server_http_req req{ {}, {}, "", "", data.dump(), always_false };
+        server_http_req req{ {}, {}, "", "", data.dump(), {}, always_false };
         auto result = routes->post_completions(req);
         if (result->status != 200)
         {
@@ -712,7 +712,7 @@ std::unique_ptr<server_http_res> LLMService::get_props(){
     if (get_status_code() < 0 || setjmp(get_jump_point()) != 0)
         return nullptr;
 
-    server_http_req req{ {}, {}, "", "", "", always_false };
+    server_http_req req{ {}, {}, "", "", "", {}, always_false };
     auto result = routes->get_props(req);
 
     json data = json::parse(result->data);
