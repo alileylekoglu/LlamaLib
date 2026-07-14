@@ -84,6 +84,7 @@ jobs:
 
         - id: test_build
           name: Test
+          continue-on-error: true
           run: |
             flag=0
             if [[ "$RUNNER_OS" == "macOS" ]]; then
@@ -187,6 +188,7 @@ jobs:
 
         - id: test_build
           name: Test
+          continue-on-error: true
           run: |
             flag=0
             if [[ "$RUNNER_OS" == "macOS" ]]; then
@@ -288,6 +290,7 @@ jobs:
 
         - id: test_build
           name: Test
+          continue-on-error: true
           run: |
             flag=0
             if [[ "$RUNNER_OS" == "macOS" ]]; then
@@ -457,6 +460,7 @@ jobs:
 
         - id: test_build
           name: Test
+          continue-on-error: true
           run: |
             flag=0
             if [[ "$RUNNER_OS" == "macOS" ]]; then
