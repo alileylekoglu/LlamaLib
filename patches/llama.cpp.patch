@@ -1,3 +1,21 @@
+diff --git a/common/arg.cpp b/common/arg.cpp
+index 71118b3..905323c 100644
+--- a/common/arg.cpp
++++ b/common/arg.cpp
+@@ -1058,8 +1058,11 @@ static utf8_argv make_utf8_argv() {
+ bool common_params_parse(int argc, char ** argv, common_params & params, llama_example ex, void(*print_usage)(int, char **)) {
+ #ifdef _WIN32
+     auto utf8 = make_utf8_argv();
+-    // repair argv only when it matches the process command line
+-    if (static_cast<int>(utf8.buf.size()) == argc) {
++    // repair argv only when it truly is the process command line:
++    // when llama is embedded as a library (e.g. LlamaLib inside Unity),
++    // a synthetic argv can match the host process argc by coincidence and
++    // the host's own arguments (e.g. -projectpath) would leak into the parser
++    if (static_cast<int>(utf8.buf.size()) == argc && argc > 0 && utf8.buf[0] == argv[0]) {
+         argv = utf8.ptrs.data();
+     }
+ #endif
 diff --git a/common/common.h b/common/common.h
 index 1535317..7630386 100644
 --- a/common/common.h
